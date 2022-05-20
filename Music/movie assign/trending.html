@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMDB Api</title>
+</head>
+<style>
+    #list{
+        display: grid;
+        grid-template-columns: repeat(4,22%);
+        gap: 50px;
+    }
+    img{
+        width: 100%;
+        height: 250px;
+    }
+    #list>div{
+        background-color: white;
+        border: 1px solid grey;
+        padding: 20px;
+    }
+    body{
+        background-color: black;
+        color: red;
+    }
+</style>
+<body>
+    <center>
+    <h1>Trending Movies</h1>
+    <div id="list"></div>
+    </center>
+</body>
+<script>
+    var api_key = "b5430cc5f6d58fa32ab4305b93e743f3";
+    var base_url = "https://api.themoviedb.org/3";
+    var api_url = base_url+"/discover/movie?sort_by=popularity.desc&api_key=";
+    var img_url = "https://image.tmdb.org/t/p/w500";
+    var div1 = document.getElementById("list");
+    async function getData(){
+        try{
+            let res = await fetch(api_url+api_key);
+            let data = await res.json();
+            console.log(data.results);
+            displayData(data.results);
+        }catch(err){
+            console.log(err);
+        }
+    }
+    function displayData(movieList){
+        for(var i=0; i<movieList.length; i++){    
+            var card = document.createElement("div");
+            var poster = document.createElement("img");
+            poster.setAttribute("src",img_url+movieList[i].poster_path);
+            var title = document.createElement("h3");
+            title.textContent = movieList[i].title;
+            var rating = document.createElement("h4");
+            rating.textContent = "Rating: "+movieList[i].vote_average+"/10";
+            card.append(poster,title,rating);
+            div1.append(card);
+        }
+    }
+    getData();
+</script>
+</html>
