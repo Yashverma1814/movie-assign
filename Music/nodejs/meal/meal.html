@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #container{
+        display: grid;
+        grid-template-columns: repeat(3,33%);
+        margin: 10px;
+    }
+    img{
+        width: 250px;
+        height: 250px;
+    }
+    h1{
+        font-family: 'Segoe UI';
+        font-size: 50px;
+        font-style: italic;
+    }
+</style>
+<body>
+    <center>
+    <div>
+        <h1>FOODZEE</h1>
+    </div>
+    <div id="container">
+        <div>
+            <img src="https://food.unl.edu/newsletters/images/hard-cooked-eggs_0.jpg" alt="">
+            <h3>EGG</h3>
+            <button id="btn" value="egg" onclick="getData('egg')">Select</button>
+        </div>
+        <div>
+            <img src="https://healthynibblesandbits.com/wp-content/uploads/2018/10/How-to-Make-Paneer-10.jpg" alt="">
+            <h3>PANEER</h3>
+            <button id="btn1" value="paneer" onclick="getData('paneer')">Select</button>
+        </div>
+        <div>
+            <img src="https://www.seriouseats.com/thmb/3NzIq320LmaDrMmHxkyk_ltv-fk=/880x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/20210714-potato-starch-fried-chicken-vicky-wasik-seriouseats-20-17e193a6bf274bba9091810a0b18ef89.jpg" alt="">
+            <h3>CHICKEN</h3>
+            <button id="btn2" value="chicken" onclick="getData('chicken')">Select</button>
+        </div>
+        <div>
+            <img src="https://insanelygoodrecipes.com/wp-content/uploads/2021/02/Chocolate-Chip-Pancakes-with-Whipped-Cream-768x1152.webp" alt="">
+            <h3>BREAKFAST</h3>
+            <button id="btn3" value="mushroom" onclick="getData('bread')">Select</button>
+        </div>
+    </div>
+    <button onclick="window.location.href=window.location.href">Back</button>
+    </center>
+</body>
+<script>
+    var d1 = document.getElementById("container");
+    async function getData(food){
+        d1.textContent = "";
+        let data;
+        try{
+            let res = await fetch("https://www.themealdb.com/api/json/v1/1/filter.php?i="+food);
+            data = await res.json();
+            console.log(data);
+        }catch(err){
+            console.log(err);
+        }
+        display(data);
+    }
+    function display(data1){
+        for(var i=0; i<data1.meals.length; i++){    
+            var div1 = document.createElement("div");
+            var img1 = document.createElement("img");
+            img1.setAttribute("src",data1.meals[i].strMealThumb);
+            var h = document.createElement("h3");
+            h.textContent = data1.meals[i].strMeal;
+            div1.append(img1,h);
+            d1.append(div1);
+        } 
+    }
+</script>
+</html>
